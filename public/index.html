@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lab Design System</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:   #D2080D;
+      --accent-h: #BE0000;
+      --ink:      #232930;
+      --ink-2:    #5D646E;
+      --surface:  #F8F9FA;
+      --border:   #CDD6D8;
+      --success:  #1A7F4E;
+      --danger:   #DB2B33;
+      --radius:   8px;
+      --font:     -apple-system, 'Inter', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--ink);
+      background: #fff;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ── Header ── */
+    .header { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      width: 36px; height: 36px; background: var(--accent);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0;
+    }
+    .logo svg { width: 22px; height: 22px; }
+    .title-group h1 { font-size: 14px; font-weight: 700; line-height: 1.2; }
+    .title-group p  { font-size: 11px; color: var(--ink-2); margin-top: 1px; }
+
+    /* ── Status bar ── */
+    .status-bar {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 12px;
+      font-size: 11px; line-height: 1.7; color: var(--ink-2);
+    }
+    .status-bar strong { color: var(--ink); font-weight: 600; }
+    .status-row { display: flex; justify-content: space-between; }
+
+    /* ── Section ── */
+    .section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--ink-2);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%; padding: 10px 14px; border: none; border-radius: var(--radius);
+      font-family: var(--font); font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: background 0.15s, opacity 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-h); }
+    .btn-secondary {
+      background: transparent; color: var(--ink-2);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover:not(:disabled) { background: var(--surface); color: var(--ink); }
+
+    /* ── Log ── */
+    .log {
+      flex: 1; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 12px;
+      font-size: 11px; line-height: 1.7; font-family: ui-monospace, monospace;
+      max-height: 180px; overflow-y: auto; display: none;
+    }
+    .log.visible { display: block; }
+    .log-line { margin: 0; }
+    .log-line.ok     { color: var(--success); }
+    .log-line.warn   { color: #B45309; }
+    .log-line.error  { color: var(--danger); }
+    .log-line.info   { color: var(--ink-2); }
+
+    /* ── Divider ── */
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ── Spinner ── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    .spinning .spinner { display: block; }
+    .spinning .btn-label { opacity: 0.8; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 3h6M9 3v6L4 17a2 2 0 0 0 1.8 2.9h10.4A2 2 0 0 0 18 17l-5-8V3"
+              stroke="#FDFCF9" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3.5 16.5c1.2-1.8 3-2.5 5.5-1.8s4 2 6 .8"
+              stroke="#FDFCF9" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="title-group">
+      <h1>The Lab Design System</h1>
+      <p id="file-name">Loading…</p>
+    </div>
+  </div>
+
+  <div class="status-bar" id="status-bar">
+    <div class="status-row"><span>Token sets</span><strong id="st-sets">—</strong></div>
+    <div class="status-row"><span>Typographies</span><strong id="st-typos">—</strong></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <span class="section-label">Actions</span>
+    <button class="btn btn-primary" id="btn-apply">
+      <div class="spinner"></div>
+      <span class="btn-label">⚡ Apply Design System</span>
+    </button>
+    <button class="btn btn-secondary" id="btn-clear">
+      <span class="btn-label">🗑 Clear Plugin Tokens &amp; Typographies</span>
+    </button>
+  </div>
+
+  <hr>
+
+  <div class="log" id="log"></div>
+
+</body>
+<script>
+  // ── Messaging bridge ───────────────────────────────────────────────────────
+  const send = (type, payload = {}) => parent.postMessage({ type, ...payload }, '*');
+
+  window.addEventListener('message', ({ data }) => {
+    if (!data?.type) return;
+    if (data.type === 'status')     renderStatus(data);
+    if (data.type === 'apply-done') renderApplyDone(data.result);
+    if (data.type === 'clear-done') renderClearDone(data.result);
+  });
+
+  // ── Buttons ────────────────────────────────────────────────────────────────
+  const btnApply = document.getElementById('btn-apply');
+  const btnClear = document.getElementById('btn-clear');
+
+  btnApply.addEventListener('click', () => {
+    setLoading(btnApply, true);
+    clearLog();
+    send('apply');
+  });
+
+  btnClear.addEventListener('click', () => {
+    if (!confirm('Remove all The Lab tokens and typographies from this file?')) return;
+    setLoading(btnClear, true);
+    clearLog();
+    send('clear');
+  });
+
+  // ── Status ─────────────────────────────────────────────────────────────────
+  function renderStatus(data) {
+    document.getElementById('file-name').textContent = data.file ?? '(unknown)';
+    const activeCount = (data.sets ?? []).filter(s => s.active).length;
+    const totalTokens = (data.sets ?? []).reduce((a, s) => a + s.count, 0);
+    document.getElementById('st-sets').textContent =
+      activeCount + ' active, ' + totalTokens + ' tokens';
+    document.getElementById('st-typos').textContent = data.typographies ?? 0;
+  }
+
+  function renderApplyDone(r) {
+    setLoading(btnApply, false);
+    const log = document.getElementById('log');
+    log.classList.add('visible');
+    if (r.createdTokens.length)
+      addLog('✓ ' + r.createdTokens.length + ' tokens created', 'ok');
+    if (r.createdTypographies.length)
+      addLog('✓ ' + r.createdTypographies.length + ' typographies created', 'ok');
+    if (r.skipped)
+      addLog('↷ ' + r.skipped + ' already existed (skipped)', 'info');
+    if (r.errors.length) {
+      addLog('⚠ ' + r.errors.length + ' error(s):', 'error');
+      r.errors.forEach(e => addLog('  ' + e, 'error'));
+    }
+    if (!r.errors.length && r.createdTokens.length + r.createdTypographies.length === 0)
+      addLog('Nothing to do — already up to date.', 'info');
+    send('status'); // refresh counts
+  }
+
+  function renderClearDone(r) {
+    setLoading(btnClear, false);
+    const log = document.getElementById('log');
+    log.classList.add('visible');
+    addLog('🗑 Removed ' + r.removed + ' items', r.removed ? 'warn' : 'info');
+    r.errors.forEach(e => addLog('  ' + e, 'error'));
+    send('status');
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function setLoading(btn, loading) {
+    btn.disabled = loading;
+    if (loading) btn.classList.add('spinning');
+    else btn.classList.remove('spinning');
+  }
+
+  function addLog(text, cls = 'info') {
+    const log = document.getElementById('log');
+    const p = document.createElement('p');
+    p.className = 'log-line ' + cls;
+    p.textContent = text;
+    log.appendChild(p);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function clearLog() {
+    const log = document.getElementById('log');
+    log.innerHTML = '';
+    log.classList.remove('visible');
+  }
+
+  // ── Boot ───────────────────────────────────────────────────────────────────
+  send('status');
+</script>
+</html>

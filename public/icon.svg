@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+  <rect width="56" height="56" rx="12" fill="#D2080D"/>
+  <!-- lab flask outline -->
+  <path d="M22 12h12M24 12v12l-8 16a3 3 0 0 0 2.7 4.3h18.6A3 3 0 0 0 40 40L32 24V12"
+        stroke="#FDFCF9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- liquid fill -->
+  <path d="M19 38 c2-3 5-4 9-3 s6 3 9 1 l2 3 a3 3 0 0 1-2.7 4.3H21.7A3 3 0 0 1 19 38z"
+        fill="#FDFCF9" opacity="0.9"/>
+</svg>

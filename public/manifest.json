@@ -1,0 +1,11 @@
+{
+  "name": "The Lab Design System",
+  "description": "Push The Lab brand tokens (colors, spacing, radius, typography) into any Penpot file. Idempotent — safe to re-run after a Docker wipe.",
+  "code": "/plugin.js",
+  "icon": "/icon.svg",
+  "permissions": [
+    "content:read",
+    "library:read",
+    "library:write"
+  ]
+}

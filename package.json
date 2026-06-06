@@ -1,0 +1,9 @@
+{
+  "name": "the-lab-penpot-plugin",
+  "version": "1.0.0",
+  "description": "Self-contained Penpot plugin — pushes The Lab design system (tokens + typographies) into any file. Run after every Docker wipe.",
+  "private": true,
+  "scripts": {
+    "serve": "npx serve public -p 4321 --cors"
+  }
+}
